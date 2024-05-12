@@ -1,0 +1,15 @@
+C:\VisualCodeProjects\DataAccessLayer\bin\Debug\net6.0\DataAccessLayer.deps.json
+C:\VisualCodeProjects\DataAccessLayer\bin\Debug\net6.0\DataAccessLayer.dll
+C:\VisualCodeProjects\DataAccessLayer\bin\Debug\net6.0\DataAccessLayer.pdb
+C:\VisualCodeProjects\DataAccessLayer\bin\Debug\net6.0\DomainModel.dll
+C:\VisualCodeProjects\DataAccessLayer\bin\Debug\net6.0\DomainModel.pdb
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.csproj.AssemblyReference.cache
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.AssemblyInfoInputs.cache
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.AssemblyInfo.cs
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.csproj.CopyComplete
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.dll
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\refint\DataAccessLayer.dll
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\DataAccessLayer.pdb
+C:\VisualCodeProjects\DataAccessLayer\obj\Debug\net6.0\ref\DataAccessLayer.dll
