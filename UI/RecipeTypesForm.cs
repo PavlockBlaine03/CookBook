@@ -21,6 +21,7 @@ namespace CookBook.UI
         {
             InitializeComponent();
             _recipeTypesRepository = recipeTypesRepository;
+            _recipeTypesRepository.OnError += (errorMessage) => MessageBox.Show(errorMessage);
         }
         private async void RefreshRecipeTypesList()
         {
@@ -38,9 +39,9 @@ namespace CookBook.UI
             if (string.IsNullOrEmpty(NewTypeTxt.Text))
                 return;
 
-            RecipeType recipeType = new RecipeType();
-            recipeType.Name = NewTypeTxt.Text;
-            await _recipeTypesRepository.AddRecipeType(recipeType);
+            RecipeType newRecipeType = new RecipeType(NewTypeTxt.Text);
+
+            await _recipeTypesRepository.AddRecipeType(newRecipeType);
             RefreshRecipeTypesList();
             NewTypeTxt.Text = "";
         }

@@ -104,7 +104,7 @@
             AddRecipeTypeBtn.TabIndex = 6;
             AddRecipeTypeBtn.Text = "Add";
             AddRecipeTypeBtn.UseVisualStyleBackColor = true;
-            AddRecipeTypeBtn.Click += this.AddRecipeTypeBtn_Click;
+            AddRecipeTypeBtn.Click += AddRecipeTypeBtn_Click;
             // 
             // label3
             // 
@@ -139,6 +139,7 @@
             RecipePictureBox.Size = new Size(273, 174);
             RecipePictureBox.TabIndex = 10;
             RecipePictureBox.TabStop = false;
+            RecipePictureBox.Click += RecipePictureBox_Click;
             // 
             // AddRecipeBtn
             // 
@@ -148,6 +149,7 @@
             AddRecipeBtn.TabIndex = 11;
             AddRecipeBtn.Text = "Add Recipe";
             AddRecipeBtn.UseVisualStyleBackColor = true;
+            AddRecipeBtn.Click += AddRecipeBtn_Click;
             // 
             // ClearAllFieldsBtn
             // 
@@ -157,6 +159,7 @@
             ClearAllFieldsBtn.TabIndex = 12;
             ClearAllFieldsBtn.Text = "Clear All Fields";
             ClearAllFieldsBtn.UseVisualStyleBackColor = true;
+            ClearAllFieldsBtn.Click += ClearAllFieldsBtn_Click;
             // 
             // RecipeIngredientBtn
             // 
@@ -171,6 +174,7 @@
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(128, 128, 255);
             ClientSize = new Size(1279, 648);
             Controls.Add(RecipeIngredientBtn);
             Controls.Add(ClearAllFieldsBtn);

@@ -17,4 +17,10 @@
     <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Assets\Images\recipe_placeholder_image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -20,7 +20,7 @@ namespace CookBook
             ServiceCollection services = ConfigureServices();
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            var startForm = serviceProvider.GetRequiredService<IngredientsForm>();
+            var startForm = serviceProvider.GetRequiredService<RecipesForm>();
 
             Application.Run(startForm);
         }
@@ -31,6 +31,7 @@ namespace CookBook
 
                 services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository());
             services.AddTransient<IRecipeTypesRepository>(_ => new RecipeTypesRepository());
+            services.AddTransient<IRecipesRepository>(_ => new RecipesRepository());
 
             services.AddTransient<IngredientsForm>();
             services.AddTransient<RecipesForm>();
