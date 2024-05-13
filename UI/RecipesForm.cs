@@ -167,6 +167,8 @@ namespace CookBook.UI
         private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
         {
             ClearAllFields();
+            EditRecipeBtn.Visible = false;
+            AddRecipeBtn.Visible = true;
         }
 
         private async void RecipesGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -183,6 +185,8 @@ namespace CookBook.UI
                 else if (RecipesGrid.CurrentCell.OwningColumn.Name == "EditBtn")
                 {
                     FillFormForEdit(clickedRecipe);
+                    EditRecipeBtn.Visible = true;
+                    _recipeToEditId = clickedRecipe.Id;
                 }
             }
         }
@@ -195,27 +199,37 @@ namespace CookBook.UI
             else
                 RecipePictureBox.Image = _placeholderImage;
 
-            AddRecipeBtn.Visible = false;
-            EditRecipeBtn.Visible = true;
+            RecipeTypeCbx.SelectedIndex = FindRecipeTypeIndex(clickedRecipe.RecipeTypeId);
+
         }
 
-        //private async void EditRecipeBtn_Click(object sender, EventArgs e)
-        //{
-        //    if (!IsValid())
-        //        return;
+        private int FindRecipeTypeIndex(int recipeTypeId)
+        {
+            List<RecipeType> allRecipeTypes = (List<RecipeType>) RecipeTypeCbx.DataSource;
 
-        //    Recipe recipe = new Recipe(NameTxt.Text, DescriptionTxt.Text, null, _recipeToEditId);
+            RecipeType matchingRecipeType = allRecipeTypes.FirstOrDefault(rt => rt.Id == recipeTypeId);
 
-        //    await _recipesRepository.EditRecipe(recipe);
-        //    //string text = SearchTxt.Text;
-        //    ClearAllFields();
-        //    //SearchTxt.Text = text;
-        //    RefreshGridData();
+            int index = RecipeTypeCbx.Items.IndexOf(matchingRecipeType);
+            return index;
+        }
 
-        //    EditRecipeBtn.Visible = false;
-        //    AddRecipeBtn.Visible = true;
+        private async void EditRecipeBtn_Click(object sender, EventArgs e)
+        {
+            if (!IsValid())
+                return;
 
-        //    _recipeToEditId = 0;
-        //}
+            byte[] image = null;
+            if (_isUserImageAdded)
+                image = ImageHelper.ConvertToDbImage(RecipePictureBox.ImageLocation);
+
+            int recipeTypeId = ((RecipeType)RecipeTypeCbx.SelectedItem).Id;
+            Recipe recipe = new Recipe(NameTxt.Text, DescriptionTxt.Text, image, recipeTypeId, _recipeToEditId);
+
+            await _recipesRepository.EditRecipe(recipe);
+            ClearAllFields();
+            RefreshGridData();
+            EditRecipeBtn.Visible = false;
+            AddRecipeBtn.Visible = true;
+        }
     }
 }
