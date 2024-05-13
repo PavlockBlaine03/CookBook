@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DataAccessLayer.CustomQueryResults;
 
 namespace CookBook.UI
 {
@@ -23,6 +24,7 @@ namespace CookBook.UI
         private readonly IServiceProvider _serviceProvider;
 
         private bool _isUserImageAdded = false;
+        private int _recipeToEditId;
 
         private Image _placeholderImage
         {
@@ -52,11 +54,14 @@ namespace CookBook.UI
 
         private void RecipesForm_Load(object sender, EventArgs e)
         {
+            CustomizeGridAppearance();
             RefreshRecipeTypes();
             RefreshGridData();
             RecipePictureBox.Image = _placeholderImage;
             RecipePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            CustomizeGridAppearance();
+
+            AddRecipeBtn.Visible = true;
+            EditRecipeBtn.Visible = false;
         }
         private void AddRecipeTypeBtn_Click(object sender, EventArgs e)
         {
@@ -97,7 +102,7 @@ namespace CookBook.UI
                 return;
 
             byte[] image = null;
-            if(_isUserImageAdded)
+            if (_isUserImageAdded)
                 image = ImageHelper.ConvertToDbImage(RecipePictureBox.ImageLocation);
 
             int recipeTypeId = ((RecipeType)RecipeTypeCbx.SelectedItem).Id;
@@ -116,23 +121,23 @@ namespace CookBook.UI
             DataGridViewColumn[] columns = new DataGridViewColumn[6];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "Id", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
-            columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Description", HeaderText = "Description" };
             columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
+            columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Description", HeaderText = "Description" };
             columns[4] = new DataGridViewButtonColumn()
-            {
-                Text = "Delete",
-                Name = "DeleteBtn",
-                HeaderText = "",
-                UseColumnTextForButtonValue = true
-            };
-            columns[5] = new DataGridViewButtonColumn()
             {
                 Text = "Edit",
                 Name = "EditBtn",
                 HeaderText = "",
                 UseColumnTextForButtonValue = true
             };
-
+            columns[5] = new DataGridViewButtonColumn()
+            {
+                Text = "Delete",
+                Name = "DeleteBtn",
+                HeaderText = "",
+                UseColumnTextForButtonValue = true
+            };
+            RecipesGrid.RowHeadersVisible = false;
             RecipesGrid.Columns.Clear();
             RecipesGrid.Columns.AddRange(columns);
 
@@ -163,5 +168,54 @@ namespace CookBook.UI
         {
             ClearAllFields();
         }
+
+        private async void RecipesGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && RecipesGrid.CurrentCell is DataGridViewButtonCell)
+            {
+                RecipeWithType clickedRecipe = (RecipeWithType)RecipesGrid.Rows[e.RowIndex].DataBoundItem;
+
+                if (RecipesGrid.CurrentCell.OwningColumn.Name == "DeleteBtn")
+                {
+                    await _recipesRepository.DeleteRecipe(clickedRecipe.Id);
+                    RefreshGridData();
+                }
+                else if (RecipesGrid.CurrentCell.OwningColumn.Name == "EditBtn")
+                {
+                    FillFormForEdit(clickedRecipe);
+                }
+            }
+        }
+        private void FillFormForEdit(RecipeWithType clickedRecipe)
+        {
+            NameTxt.Text = clickedRecipe.Name;
+            DescriptionTxt.Text = clickedRecipe.Description;
+            if (clickedRecipe.Image != null)
+                RecipePictureBox.Image = ImageHelper.ConvertFromDbImage(clickedRecipe.Image);
+            else
+                RecipePictureBox.Image = _placeholderImage;
+
+            AddRecipeBtn.Visible = false;
+            EditRecipeBtn.Visible = true;
+        }
+
+        //private async void EditRecipeBtn_Click(object sender, EventArgs e)
+        //{
+        //    if (!IsValid())
+        //        return;
+
+        //    Recipe recipe = new Recipe(NameTxt.Text, DescriptionTxt.Text, null, _recipeToEditId);
+
+        //    await _recipesRepository.EditRecipe(recipe);
+        //    //string text = SearchTxt.Text;
+        //    ClearAllFields();
+        //    //SearchTxt.Text = text;
+        //    RefreshGridData();
+
+        //    EditRecipeBtn.Visible = false;
+        //    AddRecipeBtn.Visible = true;
+
+        //    _recipeToEditId = 0;
+        //}
     }
 }

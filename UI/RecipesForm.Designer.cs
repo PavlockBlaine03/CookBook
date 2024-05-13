@@ -42,6 +42,7 @@
             AddRecipeBtn = new Button();
             ClearAllFieldsBtn = new Button();
             RecipeIngredientBtn = new Button();
+            EditRecipeBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)RecipesGrid).BeginInit();
             ((System.ComponentModel.ISupportInitialize)RecipePictureBox).BeginInit();
             SuspendLayout();
@@ -54,6 +55,7 @@
             RecipesGrid.RowTemplate.Height = 25;
             RecipesGrid.Size = new Size(765, 561);
             RecipesGrid.TabIndex = 0;
+            RecipesGrid.CellContentClick += RecipesGrid_CellContentClick;
             // 
             // RecipeFilterCbx
             // 
@@ -170,12 +172,23 @@
             RecipeIngredientBtn.Text = "Recipe Ingredients";
             RecipeIngredientBtn.UseVisualStyleBackColor = true;
             // 
+            // EditRecipeBtn
+            // 
+            EditRecipeBtn.Location = new Point(826, 483);
+            EditRecipeBtn.Name = "EditRecipeBtn";
+            EditRecipeBtn.Size = new Size(401, 47);
+            EditRecipeBtn.TabIndex = 14;
+            EditRecipeBtn.Text = "Edit Recipe";
+            EditRecipeBtn.UseVisualStyleBackColor = true;
+            EditRecipeBtn.Click += EditRecipeBtn_Click;
+            // 
             // RecipesForm
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(128, 128, 255);
             ClientSize = new Size(1279, 648);
+            Controls.Add(EditRecipeBtn);
             Controls.Add(RecipeIngredientBtn);
             Controls.Add(ClearAllFieldsBtn);
             Controls.Add(AddRecipeBtn);
@@ -217,5 +230,6 @@
         private Button AddRecipeBtn;
         private Button ClearAllFieldsBtn;
         private Button RecipeIngredientBtn;
+        private Button EditRecipeBtn;
     }
 }
