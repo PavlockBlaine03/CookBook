@@ -11,9 +11,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccessLayer.CustomQueryResults;
+using System.Diagnostics;
 
 namespace CookBook.UI
 {
@@ -25,7 +27,7 @@ namespace CookBook.UI
 
         private bool _isUserImageAdded = false;
         private int _recipeToEditId;
-
+        private List<RecipeWithType> _recipesCache;
         private Image _placeholderImage
         {
             get
@@ -46,23 +48,46 @@ namespace CookBook.UI
             _recipesRepository.OnError += (errorMessage) => MessageBox.Show(errorMessage);
             _recipeTypesRepository.OnError += (errorMessage) => MessageBox.Show(errorMessage);
         }
-        private async void RefreshRecipeTypes()
+        private async Task RefreshRecipeTypes()
         {
-            RecipeTypeCbx.DataSource = await _recipeTypesRepository.GetRecipeTypes();
+            RecipeType previouslySelectedFilter = (RecipeType)RecipeFilterCbx.SelectedItem;
+            RecipeType previouslySelectedRecipeType = (RecipeType)RecipeTypeCbx.SelectedItem;
+
+            List<RecipeType> recipeType = await _recipeTypesRepository.GetRecipeTypes();
+
+            List<RecipeType> filterList = new List<RecipeType>();
+            filterList.Add(new RecipeType("All recipe types", 0));
+            filterList.AddRange(recipeType);
+
+            RecipeTypeCbx.DataSource = recipeType;
+            RecipeFilterCbx.DataSource = filterList;
             RecipeTypeCbx.DisplayMember = "Name";
+            RecipeFilterCbx.DisplayMember = "Name";
+
+            if (previouslySelectedFilter != null && previouslySelectedFilter.Id != 0)
+            {
+                int indexToSelect = FindRecipeTypeIndex(previouslySelectedFilter.Id);
+                RecipeFilterCbx.SelectedIndex = indexToSelect + 1;
+            }
+            if (previouslySelectedRecipeType != null && previouslySelectedRecipeType.Id != 0)
+            {
+                int indexToSelect = FindRecipeTypeIndex(previouslySelectedRecipeType.Id);
+                RecipeTypeCbx.SelectedIndex = indexToSelect;
+            }
         }
 
-        private void RecipesForm_Load(object sender, EventArgs e)
+        private async void RecipesForm_Load(object sender, EventArgs e)
         {
             CustomizeGridAppearance();
-            RefreshRecipeTypes();
-            RefreshGridData();
+            await RefreshRecipeTypes();
+            RefreshRecipesCache();
             RecipePictureBox.Image = _placeholderImage;
             RecipePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
             AddRecipeBtn.Visible = true;
             EditRecipeBtn.Visible = false;
         }
+
         private void AddRecipeTypeBtn_Click(object sender, EventArgs e)
         {
             RecipeTypesForm form = _serviceProvider.GetRequiredService<RecipeTypesForm>();
@@ -110,7 +135,7 @@ namespace CookBook.UI
 
             await _recipesRepository.AddRecipe(newRecipe);
             ClearAllFields();
-            RefreshGridData();
+            RefreshRecipesCache();
         }
 
         private void CustomizeGridAppearance()
@@ -118,7 +143,7 @@ namespace CookBook.UI
             RecipesGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             RecipesGrid.AutoGenerateColumns = false;
 
-            DataGridViewColumn[] columns = new DataGridViewColumn[6];
+            DataGridViewColumn[] columns = new DataGridViewColumn[7];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "Id", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
             columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
@@ -137,14 +162,33 @@ namespace CookBook.UI
                 HeaderText = "",
                 UseColumnTextForButtonValue = true
             };
+            columns[6] = new DataGridViewButtonColumn()
+            {
+                Text = "Ingredients",
+                Name = "IngredientBtn",
+                HeaderText = "",
+                UseColumnTextForButtonValue = true
+            };
+
             RecipesGrid.RowHeadersVisible = false;
             RecipesGrid.Columns.Clear();
             RecipesGrid.Columns.AddRange(columns);
 
         }
-        private async void RefreshGridData()
+        private async void RefreshRecipesCache()
         {
-            RecipesGrid.DataSource = await _recipesRepository.GetRecipes();
+            _recipesCache = await _recipesRepository.GetRecipes();
+            FilterGridData();
+        }
+
+        private void FilterGridData()
+        {
+            RecipeType selectedType = (RecipeType)RecipeFilterCbx.SelectedItem;
+
+            if (selectedType.Id == 0)
+                RecipesGrid.DataSource = _recipesCache;
+            else
+                RecipesGrid.DataSource = _recipesCache.Where(r => r.RecipeTypeId == selectedType.Id).ToList();
         }
 
         private void RecipePictureBox_Click(object sender, EventArgs e)
@@ -180,7 +224,7 @@ namespace CookBook.UI
                 if (RecipesGrid.CurrentCell.OwningColumn.Name == "DeleteBtn")
                 {
                     await _recipesRepository.DeleteRecipe(clickedRecipe.Id);
-                    RefreshGridData();
+                    RefreshRecipesCache();
                 }
                 else if (RecipesGrid.CurrentCell.OwningColumn.Name == "EditBtn")
                 {
@@ -205,7 +249,7 @@ namespace CookBook.UI
 
         private int FindRecipeTypeIndex(int recipeTypeId)
         {
-            List<RecipeType> allRecipeTypes = (List<RecipeType>) RecipeTypeCbx.DataSource;
+            List<RecipeType> allRecipeTypes = (List<RecipeType>)RecipeTypeCbx.DataSource;
 
             RecipeType matchingRecipeType = allRecipeTypes.FirstOrDefault(rt => rt.Id == recipeTypeId);
 
@@ -227,9 +271,14 @@ namespace CookBook.UI
 
             await _recipesRepository.EditRecipe(recipe);
             ClearAllFields();
-            RefreshGridData();
+            RefreshRecipesCache();
             EditRecipeBtn.Visible = false;
             AddRecipeBtn.Visible = true;
+        }
+
+        private void RecipeFilterCbx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterGridData();
         }
     }
 }

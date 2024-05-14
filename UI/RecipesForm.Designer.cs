@@ -52,8 +52,7 @@
             RecipesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             RecipesGrid.Location = new Point(12, 75);
             RecipesGrid.Name = "RecipesGrid";
-            RecipesGrid.RowTemplate.Height = 25;
-            RecipesGrid.Size = new Size(765, 561);
+            RecipesGrid.Size = new Size(935, 561);
             RecipesGrid.TabIndex = 0;
             RecipesGrid.CellContentClick += RecipesGrid_CellContentClick;
             // 
@@ -62,12 +61,13 @@
             RecipeFilterCbx.FormattingEnabled = true;
             RecipeFilterCbx.Location = new Point(12, 21);
             RecipeFilterCbx.Name = "RecipeFilterCbx";
-            RecipeFilterCbx.Size = new Size(765, 38);
+            RecipeFilterCbx.Size = new Size(935, 38);
             RecipeFilterCbx.TabIndex = 1;
+            RecipeFilterCbx.SelectedIndexChanged += RecipeFilterCbx_SelectedIndexChanged;
             // 
             // NameTxt
             // 
-            NameTxt.Location = new Point(954, 22);
+            NameTxt.Location = new Point(1119, 20);
             NameTxt.Name = "NameTxt";
             NameTxt.Size = new Size(273, 36);
             NameTxt.TabIndex = 2;
@@ -75,7 +75,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(799, 28);
+            label1.Location = new Point(964, 26);
             label1.Name = "label1";
             label1.Size = new Size(76, 30);
             label1.TabIndex = 3;
@@ -84,7 +84,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(799, 107);
+            label2.Location = new Point(964, 105);
             label2.Name = "label2";
             label2.Size = new Size(65, 30);
             label2.TabIndex = 4;
@@ -93,14 +93,14 @@
             // RecipeTypeCbx
             // 
             RecipeTypeCbx.FormattingEnabled = true;
-            RecipeTypeCbx.Location = new Point(954, 99);
+            RecipeTypeCbx.Location = new Point(1119, 97);
             RecipeTypeCbx.Name = "RecipeTypeCbx";
             RecipeTypeCbx.Size = new Size(150, 38);
             RecipeTypeCbx.TabIndex = 5;
             // 
             // AddRecipeTypeBtn
             // 
-            AddRecipeTypeBtn.Location = new Point(1126, 99);
+            AddRecipeTypeBtn.Location = new Point(1291, 97);
             AddRecipeTypeBtn.Name = "AddRecipeTypeBtn";
             AddRecipeTypeBtn.Size = new Size(101, 38);
             AddRecipeTypeBtn.TabIndex = 6;
@@ -111,7 +111,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(799, 202);
+            label3.Location = new Point(964, 200);
             label3.Name = "label3";
             label3.Size = new Size(127, 30);
             label3.TabIndex = 7;
@@ -120,7 +120,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(799, 348);
+            label4.Location = new Point(964, 346);
             label4.Name = "label4";
             label4.Size = new Size(79, 30);
             label4.TabIndex = 8;
@@ -128,7 +128,7 @@
             // 
             // DescriptionTxt
             // 
-            DescriptionTxt.Location = new Point(954, 163);
+            DescriptionTxt.Location = new Point(1119, 161);
             DescriptionTxt.Name = "DescriptionTxt";
             DescriptionTxt.Size = new Size(273, 96);
             DescriptionTxt.TabIndex = 9;
@@ -136,7 +136,7 @@
             // 
             // RecipePictureBox
             // 
-            RecipePictureBox.Location = new Point(954, 285);
+            RecipePictureBox.Location = new Point(1119, 283);
             RecipePictureBox.Name = "RecipePictureBox";
             RecipePictureBox.Size = new Size(273, 174);
             RecipePictureBox.TabIndex = 10;
@@ -145,7 +145,7 @@
             // 
             // AddRecipeBtn
             // 
-            AddRecipeBtn.Location = new Point(826, 483);
+            AddRecipeBtn.Location = new Point(991, 481);
             AddRecipeBtn.Name = "AddRecipeBtn";
             AddRecipeBtn.Size = new Size(401, 47);
             AddRecipeBtn.TabIndex = 11;
@@ -155,7 +155,7 @@
             // 
             // ClearAllFieldsBtn
             // 
-            ClearAllFieldsBtn.Location = new Point(826, 589);
+            ClearAllFieldsBtn.Location = new Point(991, 587);
             ClearAllFieldsBtn.Name = "ClearAllFieldsBtn";
             ClearAllFieldsBtn.Size = new Size(401, 47);
             ClearAllFieldsBtn.TabIndex = 12;
@@ -165,7 +165,7 @@
             // 
             // RecipeIngredientBtn
             // 
-            RecipeIngredientBtn.Location = new Point(826, 536);
+            RecipeIngredientBtn.Location = new Point(991, 534);
             RecipeIngredientBtn.Name = "RecipeIngredientBtn";
             RecipeIngredientBtn.Size = new Size(401, 47);
             RecipeIngredientBtn.TabIndex = 13;
@@ -174,7 +174,7 @@
             // 
             // EditRecipeBtn
             // 
-            EditRecipeBtn.Location = new Point(826, 483);
+            EditRecipeBtn.Location = new Point(991, 481);
             EditRecipeBtn.Name = "EditRecipeBtn";
             EditRecipeBtn.Size = new Size(401, 47);
             EditRecipeBtn.TabIndex = 14;
@@ -187,7 +187,7 @@
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(128, 128, 255);
-            ClientSize = new Size(1279, 648);
+            ClientSize = new Size(1429, 648);
             Controls.Add(EditRecipeBtn);
             Controls.Add(RecipeIngredientBtn);
             Controls.Add(ClearAllFieldsBtn);
@@ -203,7 +203,7 @@
             Controls.Add(NameTxt);
             Controls.Add(RecipeFilterCbx);
             Controls.Add(RecipesGrid);
-            Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Segoe UI", 16F);
             Margin = new Padding(5, 6, 5, 6);
             Name = "RecipesForm";
             Text = "Recipes";
