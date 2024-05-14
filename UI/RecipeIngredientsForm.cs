@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Contracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,13 @@ namespace CookBook.UI
 {
     public partial class RecipeIngredientsForm : Form
     {
-        public RecipeIngredientsForm()
+        private readonly IRecipeIngredientsRepository _recipeIngredientsRepository;
+        private readonly IIngredientsRepository _ingredientsRepository;
+        public RecipeIngredientsForm(IRecipeIngredientsRepository recipeIngredientsRepository, IIngredientsRepository ingredientsRepository)
         {
             InitializeComponent();
+            _recipeIngredientsRepository = recipeIngredientsRepository;
+            _ingredientsRepository = ingredientsRepository;
         }
 
 
