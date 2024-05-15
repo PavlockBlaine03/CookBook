@@ -232,6 +232,12 @@ namespace CookBook.UI
                     EditRecipeBtn.Visible = true;
                     _recipeToEditId = clickedRecipe.Id;
                 }
+                else if (RecipesGrid.CurrentCell.OwningColumn.Name == "IngredientBtn")
+                {
+                    RecipeIngredientsForm form = _serviceProvider.GetRequiredService<RecipeIngredientsForm>();
+                    form.RecipeId = clickedRecipe.Id;
+                    form.ShowDialog();
+                }
             }
         }
         private void FillFormForEdit(RecipeWithType clickedRecipe)

@@ -15,6 +15,7 @@ namespace CookBook.UI
     {
         private readonly IRecipeIngredientsRepository _recipeIngredientsRepository;
         private readonly IIngredientsRepository _ingredientsRepository;
+        public int RecipeId { get; set; }
         public RecipeIngredientsForm(IRecipeIngredientsRepository recipeIngredientsRepository, IIngredientsRepository ingredientsRepository)
         {
             InitializeComponent();
@@ -22,6 +23,21 @@ namespace CookBook.UI
             _ingredientsRepository = ingredientsRepository;
         }
 
+        private void RecipeIngredientsForm_Load(object sender, EventArgs e)
+        {
+            RefreshAllIngredients();
+            RefreshRecipeIngredients();
 
+        }
+        private async void RefreshRecipeIngredients()
+        {
+            RecipeIngredientsLbx.DataSource = await _recipeIngredientsRepository.GetRecipeIngredients(RecipeId);
+            RecipeIngredientsLbx.DisplayMember = "Name";
+        }
+        private async void RefreshAllIngredients()
+        {
+            AllIngredientsLbx.DataSource = await _ingredientsRepository.GetIngredients();
+            AllIngredientsLbx.DisplayMember = "Name";
+        }
     }
 }
