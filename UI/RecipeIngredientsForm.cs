@@ -1,4 +1,7 @@
-﻿using DataAccessLayer.Contracts;
+﻿using CookBook.ViewModels;
+using DataAccessLayer.Contracts;
+using DataAccessLayer.CustomQueryResults;
+using DomainModel.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,13 +34,45 @@ namespace CookBook.UI
         }
         private async void RefreshRecipeIngredients()
         {
-            RecipeIngredientsLbx.DataSource = await _recipeIngredientsRepository.GetRecipeIngredients(RecipeId);
-            RecipeIngredientsLbx.DisplayMember = "Name";
+            List<RecipeIngredientWithNameAndAmount> results = await _recipeIngredientsRepository.GetRecipeIngredients(RecipeId);
+            List<RecipeIngredientVM> recipeIngredients = new List<RecipeIngredientVM>();
+
+            foreach (var ingredient in results)
+            {
+                recipeIngredients.Add(new RecipeIngredientVM(ingredient.IngredientId, ingredient.Name, ingredient.Amount));
+            }
+
+            RecipeIngredientsLbx.DataSource = recipeIngredients;
+
+            RecipeIngredientsLbx.DisplayMember = "NameWithAmount";
         }
         private async void RefreshAllIngredients()
         {
             AllIngredientsLbx.DataSource = await _ingredientsRepository.GetIngredients();
             AllIngredientsLbx.DisplayMember = "Name";
+        }
+
+        private async void AddIngredientBtn_Click(object sender, EventArgs e)
+        {
+            if(AllIngredientsLbx.SelectedItem != null)
+            {
+                AmountForm amountForm = new AmountForm();
+                if(amountForm.ShowDialog() == DialogResult.OK)
+                {
+                    Ingredient selectedIngredient = (Ingredient)AllIngredientsLbx.SelectedItem;
+
+                    RecipeIngredient newRecipeIngredient = new RecipeIngredient(RecipeId, selectedIngredient.Id, amountForm.Amount);
+
+                    bool isExistingIngredient = ((List<RecipeIngredientVM>) RecipeIngredientsLbx.DataSource).Any(i => i.IngredientId == selectedIngredient.Id);
+
+                    if(isExistingIngredient)
+                        await _recipeIngredientsRepository.EditRecipeIngredientAmount(newRecipeIngredient);
+                    else
+                        await _recipeIngredientsRepository.AddRecipeIngredient(newRecipeIngredient);
+
+                    RefreshRecipeIngredients();
+                }
+            }
         }
     }
 }
