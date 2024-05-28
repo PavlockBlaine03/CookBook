@@ -90,6 +90,7 @@
             RemoveIngredientBtn.TabIndex = 5;
             RemoveIngredientBtn.Text = "Remove Ingredient";
             RemoveIngredientBtn.UseVisualStyleBackColor = true;
+            RemoveIngredientBtn.Click += RemoveIngredientBtn_Click;
             // 
             // RecipeIngredientsForm
             // 

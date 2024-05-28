@@ -54,24 +54,37 @@ namespace CookBook.UI
 
         private async void AddIngredientBtn_Click(object sender, EventArgs e)
         {
-            if(AllIngredientsLbx.SelectedItem != null)
+            if (AllIngredientsLbx.SelectedItem != null)
             {
                 AmountForm amountForm = new AmountForm();
-                if(amountForm.ShowDialog() == DialogResult.OK)
+                if (amountForm.ShowDialog() == DialogResult.OK)
                 {
                     Ingredient selectedIngredient = (Ingredient)AllIngredientsLbx.SelectedItem;
 
                     RecipeIngredient newRecipeIngredient = new RecipeIngredient(RecipeId, selectedIngredient.Id, amountForm.Amount);
 
-                    bool isExistingIngredient = ((List<RecipeIngredientVM>) RecipeIngredientsLbx.DataSource).Any(i => i.IngredientId == selectedIngredient.Id);
+                    bool isExistingIngredient = ((List<RecipeIngredientVM>)RecipeIngredientsLbx.DataSource).Any(i => i.IngredientId == selectedIngredient.Id);
 
-                    if(isExistingIngredient)
+                    if (isExistingIngredient)
                         await _recipeIngredientsRepository.EditRecipeIngredientAmount(newRecipeIngredient);
                     else
                         await _recipeIngredientsRepository.AddRecipeIngredient(newRecipeIngredient);
 
                     RefreshRecipeIngredients();
                 }
+            }
+        }
+
+        private async void RemoveIngredientBtn_Click(object sender, EventArgs e)
+        {
+            if(RecipeIngredientsLbx.SelectedItem != null)
+            {
+                RecipeIngredientVM ingredient = (RecipeIngredientVM)RecipeIngredientsLbx.SelectedItem;
+
+                await _recipeIngredientsRepository.DeleteRecipeIngredient(ingredient.IngredientId, RecipeId);
+
+                RefreshRecipeIngredients();
+
             }
         }
     }

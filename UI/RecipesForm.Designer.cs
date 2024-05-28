@@ -41,7 +41,6 @@
             RecipePictureBox = new PictureBox();
             AddRecipeBtn = new Button();
             ClearAllFieldsBtn = new Button();
-            RecipeIngredientBtn = new Button();
             EditRecipeBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)RecipesGrid).BeginInit();
             ((System.ComponentModel.ISupportInitialize)RecipePictureBox).BeginInit();
@@ -145,7 +144,7 @@
             // 
             // AddRecipeBtn
             // 
-            AddRecipeBtn.Location = new Point(991, 481);
+            AddRecipeBtn.Location = new Point(991, 512);
             AddRecipeBtn.Name = "AddRecipeBtn";
             AddRecipeBtn.Size = new Size(401, 47);
             AddRecipeBtn.TabIndex = 11;
@@ -163,19 +162,9 @@
             ClearAllFieldsBtn.UseVisualStyleBackColor = true;
             ClearAllFieldsBtn.Click += ClearAllFieldsBtn_Click;
             // 
-            // RecipeIngredientBtn
-            // 
-            RecipeIngredientBtn.Location = new Point(991, 534);
-            RecipeIngredientBtn.Name = "RecipeIngredientBtn";
-            RecipeIngredientBtn.Size = new Size(401, 47);
-            RecipeIngredientBtn.TabIndex = 13;
-            RecipeIngredientBtn.Text = "Recipe Ingredients";
-            RecipeIngredientBtn.UseVisualStyleBackColor = true;
-            RecipeIngredientBtn.Click += RecipeIngredientBtn_Click;
-            // 
             // EditRecipeBtn
             // 
-            EditRecipeBtn.Location = new Point(991, 481);
+            EditRecipeBtn.Location = new Point(991, 512);
             EditRecipeBtn.Name = "EditRecipeBtn";
             EditRecipeBtn.Size = new Size(401, 47);
             EditRecipeBtn.TabIndex = 14;
@@ -190,7 +179,6 @@
             BackColor = Color.FromArgb(128, 128, 255);
             ClientSize = new Size(1429, 648);
             Controls.Add(EditRecipeBtn);
-            Controls.Add(RecipeIngredientBtn);
             Controls.Add(ClearAllFieldsBtn);
             Controls.Add(AddRecipeBtn);
             Controls.Add(RecipePictureBox);
@@ -230,7 +218,6 @@
         private PictureBox RecipePictureBox;
         private Button AddRecipeBtn;
         private Button ClearAllFieldsBtn;
-        private Button RecipeIngredientBtn;
         private Button EditRecipeBtn;
     }
 }
