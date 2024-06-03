@@ -48,8 +48,18 @@ namespace CookBook.UI
         }
         private async void RefreshAllIngredients()
         {
-            AllIngredientsLbx.DataSource = await _ingredientsRepository.GetIngredients();
-            AllIngredientsLbx.DisplayMember = "Name";
+            //AllIngredientsLbx.DataSource = await _ingredientsRepository.GetIngredients();
+            //AllIngredientsLbx.DisplayMember = "Name";
+
+            List<Ingredient> allIngredients = await _ingredientsRepository.GetIngredients();
+
+            List<ListBoxItemVM> itemsList = new List<ListBoxItemVM>();
+            foreach(Ingredient i in allIngredients)
+            {
+                itemsList.Add(new ListBoxItemVM(i, i.Name));
+            }
+
+            AllIngredientsCustomLbx.SetDataSource(itemsList);
         }
 
         private async void AddIngredientBtn_Click(object sender, EventArgs e)
