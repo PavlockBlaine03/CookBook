@@ -39,6 +39,8 @@
             CustomLbx.Name = "CustomLbx";
             CustomLbx.Size = new Size(464, 664);
             CustomLbx.TabIndex = 0;
+            CustomLbx.DrawItem += CustomLbx_DrawItem;
+            CustomLbx.MeasureItem += CustomLbx_MeasureItem;
             // 
             // CustomListBox
             // 
